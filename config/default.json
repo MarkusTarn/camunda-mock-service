@@ -1,0 +1,6 @@
+{
+    "service": {
+        "host": "http://localhost",
+        "port": "666"
+    }
+}

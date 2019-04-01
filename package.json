@@ -1,0 +1,27 @@
+{
+  "name": "camunda-mock-service",
+  "version": "1.0.0",
+  "description": "Simplest API that returns true/false depending on route",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./app.js",
+    "watch": "npm run watch:dev",
+    "watch:dev": "pm2 start ./app.js --name $npm_package_name --watch --ignore-watch='logs'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarkusTarn/camunda-mock-service.git"
+  },
+  "author": "Markus Tarn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarkusTarn/camunda-mock-service/issues"
+  },
+  "homepage": "https://github.com/MarkusTarn/camunda-mock-service#readme",
+  "dependencies": {
+    "config": "^3.0.1",
+    "express": "^4.16.4",
+    "pm2": "^3.4.1"
+  }
+}
