@@ -1,6 +1,6 @@
 {
     "service": {
         "host": "http://localhost",
-        "port": "666"
+        "port": "3600"
     }
 }
