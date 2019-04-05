@@ -10,6 +10,13 @@
     <title>Camunda Mock Service</title>
 
     <style>
+        .collapsible-body button {
+            margin-left: 5px;
+        }
+        .clickable {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -23,35 +30,54 @@
         </nav>
     </div>
 
-    <!-- Processes -->
     <div class="container">
+
+        <!-- Processes -->
         <ul id="processList" class="collapsible popout">
-            <li>
+            <!-- <li>
                 <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
                 <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
             </li>
-            <li>
-                <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+            <li id="id................">
+                <div class="collapsible-header"><i class="material-icons">settings</i>Second<span class="new badge"
+                        data-badge-caption="V.">4</span></div>
                 <div class="collapsible-body">
                     <div class="row">
-                        <div class="col s8">
+                        <div class="col s6">
                             <span>Lorem ipsum dolor sit amet.</span>
                         </div>
-                        <div class="col s2">
-                            <button class="btn waves-effect waves-light right" onclick="StartProcessAsync('ae75aa8f-56ef-11e9-a1f7-0242ac110002');">Start<i
+                        <div class="col s6">
+                            <button class="btn waves-effect waves-light right"
+                                onclick="startProcessAsync('ae75aa8f-56ef-11e9-a1f7-0242ac110002');">Start<i
                                     class="material-icons right">play_arrow</i></button>
                         </div>
-                        <div class="col s2">
-                            <button class="btn waves-effect waves-light right" type="submit" name="action">Stop<i
-                                    class="material-icons right">stop</i></button>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>Model</span>
+                                    <input type="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                                <button class="btn-large waves-effect waves-light red lighten-2 right"
+                                onclick="deleteProcessAsync('holiday:5:143aac36-5715-11e9-a1f7-0242ac110002');">Delete<i
+                                    class="material-icons right">delete</i></button>
+                            <button class="btn-large waves-effect waves-light right"
+                                onclick="updateProcessAsync('ae75aa8f-56ef-11e9-a1f7-0242ac110002');">Update<i
+                                    class="material-icons right">build</i></button>
                         </div>
                     </div>
-                </div>
             </li>
             <li>
                 <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
                 <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-            </li>
+            </li> -->
 
         </ul>
     </div>
@@ -63,25 +89,153 @@
         let data = await response.json();
         return data;
     }
-    async function StartProcessAsync(id) {
+
+    async function startProcessAsync(id) {
         const payload = {
             variables: {
                 email: {
                     value: 'Peeter@eeter.com',
                     type: 'String'
                 }
-            },
-            businessKey: 'lagavulin'
+            }
         }
 
         let response = await fetch('http://localhost:8080/engine-rest/process-definition/' + id + '/start', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:  JSON.stringify(payload)
+            body: JSON.stringify(payload)
         });
-        let data = await response.json();
-        console.log(data);
-        return data;
+        if (response.ok) {
+            M.toast({ html: 'Process started' });
+        } else {
+            M.toast({ html: 'Unsuccessfull' });
+        }
+    }
+
+    async function updateProcessAsync(id) {
+        const fileInput = document.getElementById(id + '-file');
+        var reader = new FileReader();
+        reader.readAsBinaryString(fileInput.files[0]);
+
+        reader.onload = function () {
+        var data = new FormData();
+            data.append("deployment-name", "Customer Registration Model");
+            data.append("enable-duplicate-filtering", "false");
+            data.append("deploy-changed-only", "false");
+            data.append("deployment-source", "local ");
+            data.append("tenant-id", "customer-registration-model-v1");
+            data.append("evo-customer-registration-model.bpmn", fileInput.files[0]);
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                document.getElementById('processList').innerHTML = '';
+                getProcessesAsync()
+                    .then(data => data.forEach(addProcess));
+                M.toast({ html: 'Process deployed successfully' });
+            }
+            });
+
+            xhr.open("POST", "http://localhost:8080/engine-rest/deployment/create");
+            // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("content-Type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
+            xhr.setRequestHeader("cache-control", "no-cache");
+
+            xhr.send(data);
+        }
+        // const fileInput = document.getElementById(id + '-file');
+        // var reader = new FileReader();
+        // reader.readAsBinaryString(fileInput.files[0]);
+
+        // reader.onload = function () {
+            
+        //     let fileData = {
+        //         value: reader.result,
+        //         options: {
+        //             filename: fileInput.files[0].name,
+        //             contentType: null
+        //         }
+        //     }
+
+        //     var data = new FormData();
+        //     data.append('deployment-name', 'Customer Registration Model');
+        //     data.append('enable-duplicate-filtering', 'false');
+        //     data.append('deploy-changed-only', 'false');
+        //     data.append('deployment-source', 'local');
+        //     data.append('tenant-id', 'customer-registration-model-v1');
+        //     data.append('data', reader.result);
+
+        //     let response = fetch('http://localhost:8080/engine-rest/deployment/create', { 
+        //         method: 'POST',
+        //         headers: { 
+        //             // 'Content-Type': 'application/json',
+        //             'Content-Type': 'application/x-www-form-urlencoded',
+        //             'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        //         },
+        //         body: data
+        //     });
+
+        //     if (response.ok) {
+        //         document.getElementById('processList').innerHTML = '';
+        //         getProcessesAsync()
+        //             .then(data => data.forEach(addProcess));
+        //         M.toast({ html: 'Process deployed successfully' });
+        //     } else {
+        //         M.toast({ html: 'Unsuccessfull' });
+        //     }
+        // }
+    }
+
+    async function deleteProcessAsync(id) {
+        let response = await fetch('http://localhost:8080/engine-rest/process-definition/' + id + '?cascade=true&skipCustomListeners=true&skipIoMappings=true', { method: 'DELETE' });
+        if (response.ok) {
+            let prosess = document.getElementById(id);
+            prosess.parentNode.removeChild(prosess);
+            M.toast({ html: 'Process definition deleted' });
+        } else {
+            M.toast({ html: 'Unsuccessfull' });
+        }
+    }
+
+    function copyToClipboard(id) {
+        navigator.clipboard.writeText(id).then(() => M.toast({ html: 'Copied to Clipboard!' }));
+    }
+
+    function addProcess(process) {
+        document.getElementById('processList').innerHTML +=
+        '<li id="' + process.id + '">' +
+            '<div class="collapsible-header">' +
+                '<i class="material-icons">settings</i>' + process.key + '<span class="new badge" data-badge-caption="V.">' + process.version + '</span>' +
+            '</div>' +
+            '<div class="collapsible-body">' +
+                '<div class="row">' +
+                    '<div class="col s6">' +
+                        '<i class="tiny material-icons clickable" onclick="copyToClipboard(' + "'" + process.id + "'" + ');">content_copy</i><span> ' + process.id + '</span>' +
+                    '</div>' +
+                    '<div class="col s6">' +
+                        '<button class="btn waves-effect waves-light right" onclick="startProcessAsync(' + "'" + process.id + "'" + ');">Start<i class="material-icons right">play_arrow</i></button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                    '<div class="col s6">' +
+                        '<div class="file-field input-field">' +
+                            '<div class="btn">' +
+                                '<span>Model</span><input id="' + process.id + '-file" type="file">' +
+                            '</div>' +
+                            '<div class="file-path-wrapper">' +
+                                '<input class="file-path validate" type="text">' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col s6">' +
+                        '<button class="btn-large waves-effect waves-light red lighten-2 right" onclick="deleteProcessAsync(' + "'" + process.id + "'" + ');">Delete<i class="material-icons right">delete</i></button>' +
+                        '<button class="btn-large waves-effect waves-light right" onclick="updateProcessAsync(' + "'" + process.id + "'" + ');">Update<i class="material-icons right">build</i></button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</li>'
     }
 
     (function () {
@@ -89,19 +243,7 @@
         const instances = M.Collapsible.init(elems);
 
         getProcessesAsync()
-            .then(data => {
-                console.log(data);
-                data.forEach((element) => {
-                    document.getElementById('processList').innerHTML +=
-                        '<li>' +
-                        '<div class="collapsible-header">' + element.key + '</div>' +
-                        '<div class="collapsible-body">' +
-                        '<span>' + element.id + '</span>' +
-                        '<button class="btn waves-effect waves-light" type="submit" name="action">Start<i class="material-icons right">send</i></button>'
-                    '</div>' +
-                        '</li>';
-                });
-            });
+            .then(data => data.forEach(addProcess));
     })();
 </script>
 
