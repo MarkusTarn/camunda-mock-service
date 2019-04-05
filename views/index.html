@@ -10,6 +10,12 @@
     <title>Camunda Mock Service</title>
 
     <style>
+        .alerts {
+            background: #ee6e73;
+            position: absolute;
+            bottom: 0;
+            height: 120px;
+        }
         .collapsible-body button {
             margin-left: 5px;
         }
@@ -23,11 +29,14 @@
             margin-bottom: 0;
             margin-top: 0;
         }
-
+        .instances {
+            margin-left: 10px;
+            color: #757575;
+        }
     </style>
 </head>
 
-<body class="text-center">
+<body id="alerts" class="text-center">
     <!-- Header -->
     <div class="navbar-fixed">
         <nav>
@@ -41,6 +50,7 @@
 
         <!-- Processes -->
         <ul id="processList" class="collapsible popout"></ul>
+        
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
