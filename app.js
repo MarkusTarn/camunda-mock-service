@@ -9,6 +9,8 @@ app.engine('html', es6Renderer);
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'html');
 
+app.use(express.static(join(__dirname, 'public')));
+
 app.get('/respond', logResponse, (req, res) => res.json(req.query));
 app.get('/random', (req, res) => res.json({ response: (Math.floor(Math.random() * Math.floor(2))) }));
 app.get('/randomBoolean', (req, res) => res.json({ response: (Math.floor(Math.random() * Math.floor(2)) ? true : false) }));
