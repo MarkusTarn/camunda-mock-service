@@ -7,6 +7,32 @@ const db = new JsonDB(
     '/'                       // query separator
 );
 
+const migrateDB = async () => {
+    try {
+        db.get('/handlers') == ''
+    } catch(error) {
+        db.push('/', {
+            "handlers": {
+                "mambu-create-client": {
+                    "status": "registred",
+                    "loans": "0"
+                },
+                "risk-autocam-decision": {
+                    "decision": "1"
+                },
+                "risk-client-unique": {
+                    "unique": "1"
+                },
+                "salesforce-create-client": {
+                    "clientID": 0,
+                    "name": "Alvin"
+                }
+            }
+        });
+    }
+};
+
 module.exports = {
-    db
+    db,
+    migrateDB
 }

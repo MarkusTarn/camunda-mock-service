@@ -1,4 +1,5 @@
 const config = require('config');
+const migrateDB = require('./helpers/jsonDB').migrateDB;
 const join = require('path').join;
 const express = require('express');
 const json = require('express').json;
@@ -22,7 +23,10 @@ app.use(json());
 const logResponse = (req, res, next) => { console.log('query: ', req.query); console.log('body: ', req.body); next(); };
 
 app.use('/handlers', logResponse, handlerController);
+app.use('/handlerss', (req, res) => res.json(migration.getData('/')));
 app.get('/', logResponse, (req, res) => res.render('index'));
+
+migrateDB();
 
 const client = camundaProcessor([
     mambuCreateClient, 
