@@ -1,0 +1,24 @@
+.alerts {
+    background: #ee6e73;
+    position: absolute;
+    bottom: 0;
+    height: 120px;
+}
+.collapsible-body button {
+    margin-left: 5px;
+}
+.clickable {
+    cursor: pointer;
+    margin-left: 5px;
+}
+.clickable:hover {
+    color: #4db6ac;
+}
+.file-field {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.instances {
+    margin-left: 10px;
+    color: #757575;
+}
