@@ -22,3 +22,24 @@
     margin-left: 10px;
     color: #757575;
 }
+.handler-variable {
+    margin: 0;
+    width: 100%;
+    vertical-align: middle;
+}
+.handler-variable {
+    margin: 0;
+    width: 100%;
+    vertical-align: middle;
+}
+#handlersList .row {
+    margin: 0;
+}
+#handlersList input {
+    margin: 0;
+    height: 20px;
+    width: 100px;
+}
+#handlersList a {
+    color: #4db6ac;
+}

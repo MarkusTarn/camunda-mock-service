@@ -2,5 +2,8 @@
     "service": {
         "host": "http://localhost",
         "port": "3600"
+    },
+    "camunda": {
+        "baseUrl": "http://localhost:8080/engine-rest/"
     }
 }

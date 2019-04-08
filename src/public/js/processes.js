@@ -1,9 +1,7 @@
 const predicate = (a, b) => (b.name < a.name ? 1 : (b.name < a.name ? -1 : (b.version > a.version ? 1 : -1)));
 
 function initialize() {
-    const elements = document.querySelectorAll('.collapsible');
-    M.Collapsible.init(elements);
-
+    M.Collapsible.init(document.querySelectorAll('.collapsible'));
     loadProcesses();
 }
 
@@ -21,7 +19,7 @@ async function enableFileUpload(id) {
 
 async function loadProcesses() {
     const processes = await getProcessesAsync();
-
+    
     if (processes.length < 1)  {
         alert('No processes found')
     } else {

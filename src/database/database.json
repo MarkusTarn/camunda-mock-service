@@ -1,0 +1,18 @@
+{
+    "handlers": {
+        "mambu-create-client": {
+            "status": "registred",
+            "loans": "0"
+        },
+        "risk-autocam-decision": {
+            "decision": "1"
+        },
+        "risk-client-unique": {
+            "unique": "1"
+        },
+        "salesforce-create-client": {
+            "clientID": 0,
+            "name": "Alvin"
+        }
+    }
+}
