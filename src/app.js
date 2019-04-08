@@ -23,7 +23,6 @@ app.use(json());
 const logResponse = (req, res, next) => { console.log('query: ', req.query); console.log('body: ', req.body); next(); };
 
 app.use('/handlers', logResponse, handlerController);
-app.use('/handlerss', (req, res) => res.json(migration.getData('/')));
 app.get('/', logResponse, (req, res) => res.render('index'));
 
 migrateDB();

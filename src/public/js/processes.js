@@ -1,6 +1,7 @@
 const predicate = (a, b) => (b.name < a.name ? 1 : (b.name < a.name ? -1 : (b.version > a.version ? 1 : -1)));
 
 function initialize() {
+    M.Tabs.init(document.querySelectorAll('.tabs'));
     M.Collapsible.init(document.querySelectorAll('.collapsible'));
     loadProcesses();
 }
